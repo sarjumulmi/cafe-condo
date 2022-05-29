@@ -1,42 +1,41 @@
-// const puppeteer = require('puppeteer');
+import { Card } from '../components';
 
 const Index = ({ paymentData }) => {
   return (
-    <div>
+    <div className="container">
       <code>
         {Object.keys(paymentData).map((date, i) => (
           <div key={i}>
-            <p>Date: {date} </p>
-            {paymentData[date].map((data, j) => (
-              <p key={i + j}>
-                {data.chargeTitle && <p>Title: {data.chargeTitle}</p>}
-                {data.amount && <p>Amount: {data.amount}</p>}
-                {data.totalMonthly && (
-                  <p>
-                    <b>Total: {data.totalMonthly}</b>
-                  </p>
-                )}
-              </p>
-            ))}
-            <p>*****************************************</p>
+            <Card data={paymentData[date]} date={date} />
           </div>
         ))}
       </code>
+      <style jsx>{`
+        .container {
+          padding: 1rem;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default Index;
 
+// require('dotenv').config();
 const puppeteer = require('puppeteer');
 const { login, getPaymentData } = require('../scraper');
 
 export async function getStaticProps(context) {
-  const browser = await puppeteer.launch({
+  const puppeteerConfig = {
     headless: true,
     args: ['--disable-setuid-sandbox'],
     ignoreHTTPSErrors: true,
-  });
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    config.executablePath = '/usr/bin/chromium-browser';
+  }
+  const browser = await puppeteer.launch(puppeteerConfig);
   const page = await login(
     browser,
     process.env.BASE_URL,
