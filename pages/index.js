@@ -33,7 +33,7 @@ export async function getStaticProps(context) {
   };
 
   if (process.env.NODE_ENV === 'production') {
-    config.executablePath = '/usr/bin/chromium-browser';
+    puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
   }
   const browser = await puppeteer.launch(puppeteerConfig);
   const page = await login(
