@@ -6,6 +6,7 @@ export default () => (
         position: sticky;
         top: 0;
         background-color: #fff;
+        z-index: 100;
       }
       .title h1 {
         font-family: monospace;
