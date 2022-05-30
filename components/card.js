@@ -42,12 +42,9 @@ export default ({ data, date }) => {
         .card {
           padding: 0.5rem 1.5rem;
           max-width: 500px;
-          border-top: 1px solid #7a7a7a;
-          border-left: 1px solid #7a7a7a;
-          border-bottom: 1px solid #d0c6c647;
-          border-right: 1px solid #d0c6c647;
-          border-radius: 3px;
+          border: 1px solid #7a7a7a;
           margin-bottom: 2.5rem;
+          box-shadow: 6px 10px 15px -5px rgba(0, 0, 0, 0.75);
         }
         .card-body {
           max-height: 1000px;
