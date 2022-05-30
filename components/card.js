@@ -49,6 +49,8 @@ export default ({ data, date }) => {
         .card-body {
           max-height: 1000px;
           overflow: hidden;
+          -webkit-transition: max-height 0.5s ease-in-out;
+          -o-transition: max-height 0.5s ease-in-out;
           transition: max-height 0.5s ease-in-out;
         }
         .card-body.card-body--hidden {

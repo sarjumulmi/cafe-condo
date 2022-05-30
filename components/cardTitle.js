@@ -47,7 +47,12 @@ export default ({ date, toggleShowBody, totalMonthly }) => {
           transform: rotate(135deg);
         }
         .card-title-button {
+          -webkit-transition: -webkit-transform 0.3s ease-in-out;
+          transition: -webkit-transform 0.3s ease-in-out;
+          -o-transition: transform 0.3s ease-in-out;
           transition: transform 0.3s ease-in-out;
+          transition: transform 0.3s ease-in-out,
+            -webkit-transform 0.3s ease-in-out;
           height: fit-content;
         }
       `}</style>
