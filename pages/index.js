@@ -1,8 +1,9 @@
-import { Card } from '../components';
+import { Card, Title } from '../components';
 
 const Index = ({ paymentData }) => {
   return (
     <div className="container">
+      <Title />
       <code>
         {Object.keys(paymentData).map((date, i) => (
           <div key={i}>
@@ -12,7 +13,7 @@ const Index = ({ paymentData }) => {
       </code>
       <style jsx>{`
         .container {
-          padding: 1rem;
+          padding: 0 1rem 1rem 1rem;
         }
       `}</style>
     </div>

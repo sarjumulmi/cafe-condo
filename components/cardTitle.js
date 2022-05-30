@@ -13,12 +13,14 @@ export default ({ date, toggleShowBody, totalMonthly }) => {
 
   return (
     <>
-      <div className="card-title">
+      <div className={`card-title ${isOpen ? '' : 'card-title--open'}`}>
         <h2>
           Month: {date} ({currency(totalMonthly).format()})
         </h2>
         <div
-          className={`${isOpen ? 'card-close' : 'card-open'}`}
+          className={`card-title-button ${
+            isOpen ? '' : 'card-title-button--open'
+          }`}
           onClick={toggleOpen}
         >
           <svg
@@ -36,16 +38,16 @@ export default ({ date, toggleShowBody, totalMonthly }) => {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          border-bottom: 1px solid #555;
         }
-        .card-open {
+        .card-title.card-title--open {
+          border-bottom: none;
+        }
+        .card-title-button--open {
           transform: rotate(135deg);
         }
-        .card-close {
-          transform: rotate(0deg);
-        }
-        .card-open,
-        .card-close {
-          transition: transform 0.3s ease-out;
+        .card-title-button {
+          transition: transform 0.3s ease-in-out;
           height: fit-content;
         }
       `}</style>

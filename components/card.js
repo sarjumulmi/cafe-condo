@@ -17,9 +17,7 @@ export default ({ data, date }) => {
         toggleShowBody={toggleShowBody}
         totalMonthly={data[data.length - 1].totalMonthly}
       />
-      <div
-        className={`card-body ${showCardBody ? 'card-show' : 'card-hidden'}`}
-      >
+      <div className={`card-body ${showCardBody ? '' : 'card-body--hidden'}`}>
         {data.map((dataItem, i) => (
           <div key={date + i}>
             {dataItem.chargeTitle && (
@@ -42,22 +40,19 @@ export default ({ data, date }) => {
 
       <style jsx>{`
         .card {
-          padding: 1.5rem;
-          width: 500px;
-          border: 1px solid black;
+          padding: 0.5rem 1.5rem;
+          max-width: 500px;
+          border: 1px solid #7a7a7a;
           margin-bottom: 2.5rem;
           box-shadow: 6px 10px 15px -5px rgba(0, 0, 0, 0.75);
         }
-        .card-hidden {
-          visibility: hidden;
-          max-height: 0;
-        }
-        .card-show {
+        .card-body {
           max-height: 1000px;
-        }
-        .card-show,
-        .card-hidden {
+          overflow: hidden;
           transition: max-height 0.5s ease-in-out;
+        }
+        .card-body.card-body--hidden {
+          max-height: 0;
         }
       `}</style>
     </div>
