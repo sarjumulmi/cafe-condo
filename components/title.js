@@ -1,8 +1,13 @@
 export default () => (
-  <h1 className="title">
-    501 Fitz Utilities
+  <div className="title">
+    <h1>501 Fitz Utilities</h1>
     <style jsx>{`
       .title {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+      }
+      .title h1 {
         font-family: monospace;
         font-weight: 500;
         font-size: xxx-large;
@@ -10,5 +15,5 @@ export default () => (
         width: fit-content;
       }
     `}</style>
-  </h1>
+  </div>
 );

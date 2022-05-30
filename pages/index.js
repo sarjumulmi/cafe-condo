@@ -4,13 +4,13 @@ const Index = ({ paymentData }) => {
   return (
     <div className="container">
       <Title />
-      <code>
+      <div className="content">
         {Object.keys(paymentData).map((date, i) => (
           <div key={i}>
             <Card data={paymentData[date]} date={date} />
           </div>
         ))}
-      </code>
+      </div>
       <style jsx>{`
         .container {
           padding: 0 1rem 1rem 1rem;
