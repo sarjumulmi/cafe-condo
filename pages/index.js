@@ -26,8 +26,8 @@ export default Index;
 const puppeteer = require('puppeteer');
 const { login, getPaymentData } = require('../scraper');
 
-// let expirestAt = Date.now();
-// let paymentData;
+let expirestAt = Date.now();
+let paymentData;
 
 export async function getServerSideProps({ req, res }) {
   res.setHeader(
@@ -35,46 +35,46 @@ export async function getServerSideProps({ req, res }) {
     'public, s-maxage=86400, stale-while-revalidate=60',
   );
 
-  const puppeteerConfig = {
-    headless: true,
-    args: ['--disable-setuid-sandbox'],
-    ignoreHTTPSErrors: true,
-  };
+  // const puppeteerConfig = {
+  //   headless: true,
+  //   args: ['--disable-setuid-sandbox'],
+  //   ignoreHTTPSErrors: true,
+  // };
 
-  if (process.env.NODE_ENV === 'production') {
-    puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
-  }
-  const browser = await puppeteer.launch(puppeteerConfig);
-  const page = await login(
-    browser,
-    process.env.BASE_URL,
-    process.env.EMAIL,
-    process.env.PASSWORD,
-  );
-  const paymentData = await getPaymentData(page);
-
-  // todo: if caching doesn't work, make a local cache
-  // now = Date.now();
-  // if (!paymentData || expirestAt.getTime() <= now) {
-  //   const puppeteerConfig = {
-  //     headless: true,
-  //     args: ['--disable-setuid-sandbox'],
-  //     ignoreHTTPSErrors: true,
-  //   };
-
-  //   if (process.env.NODE_ENV === 'production') {
-  //     puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
-  //   }
-  //   const browser = await puppeteer.launch(puppeteerConfig);
-  //   const page = await login(
-  //     browser,
-  //     process.env.BASE_URL,
-  //     process.env.EMAIL,
-  //     process.env.PASSWORD,
-  //   );
-  //   paymentData = await getPaymentData(page);
-  //   expirestAt = new Date(now + 24 * 60 * 60 * 1000);
+  // if (process.env.NODE_ENV === 'production') {
+  //   puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
   // }
+  // const browser = await puppeteer.launch(puppeteerConfig);
+  // const page = await login(
+  //   browser,
+  //   process.env.BASE_URL,
+  //   process.env.EMAIL,
+  //   process.env.PASSWORD,
+  // );
+  // const paymentData = await getPaymentData(page);
+
+  //if cache control doesn't work, make a local cache
+  now = Date.now();
+  if (!paymentData || expirestAt.getTime() <= now) {
+    const puppeteerConfig = {
+      headless: true,
+      args: ['--disable-setuid-sandbox'],
+      ignoreHTTPSErrors: true,
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+      puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
+    }
+    const browser = await puppeteer.launch(puppeteerConfig);
+    const page = await login(
+      browser,
+      process.env.BASE_URL,
+      process.env.EMAIL,
+      process.env.PASSWORD,
+    );
+    paymentData = await getPaymentData(page);
+    expirestAt = new Date(now + 24 * 60 * 60 * 1000);
+  }
 
   return {
     props: { paymentData }, // will be passed to the page component as props
