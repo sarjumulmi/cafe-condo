@@ -32,7 +32,7 @@ const { login, getPaymentData } = require('../scraper');
 export async function getServerSideProps({ req, res }) {
   res.setHeader(
     'Cache-Control',
-    'public, s-max-age=86400, stale-while-revalidate=60',
+    'public, s-maxage=86400, stale-while-revalidate=60',
   );
 
   const puppeteerConfig = {
