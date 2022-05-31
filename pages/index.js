@@ -30,7 +30,7 @@ const { login, getPaymentData } = require('../scraper');
 // let paymentData;
 
 export async function getServerSideProps({ req, res }) {
-  res.setHeaders(
+  res.setHeader(
     'Cache-Control',
     'public, s-max-age=86400, stale-while-revalidate=60',
   );
