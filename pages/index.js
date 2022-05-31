@@ -29,7 +29,7 @@ const { login, getPaymentData } = require('../scraper');
 // let expirestAt = Date.now();
 // let paymentData;
 
-export async function getServersideProps({ req, res }) {
+export async function getServerSideProps({ req, res }) {
   res.setHeaders(
     'Cache-Control',
     'public, s-max-age=86400, stale-while-revalidate=60',
