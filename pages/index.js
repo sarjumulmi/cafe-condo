@@ -54,7 +54,7 @@ export async function getServerSideProps({ req, res }) {
   // const paymentData = await getPaymentData(page);
 
   //if cache control doesn't work, make a local cache
-  now = Date.now();
+  const now = Date.now();
   if (!paymentData || expirestAt.getTime() <= now) {
     const puppeteerConfig = {
       headless: true,
