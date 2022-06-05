@@ -11,6 +11,7 @@ export default () => (
         z-index: 100;
       }
       .title h1 {
+        font-family: 'Bungee Shade', monospace, sans-serif;
         color: #fff;
         font-weight: 500;
         font-size: xxx-large;

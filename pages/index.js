@@ -68,18 +68,19 @@ export async function getServerSideProps({ req, res }) {
   // const paymentData = await getPaymentData(page);
 
   //if cache control doesn't work, make a local cache
-  const now = Date.now();
-  if (!paymentData || _.isEmpty(paymentData) || expirestAt.getTime() <= now) {
-    const puppeteerConfig = {
-      headless: true,
-      args: ['--disable-setuid-sandbox'],
-      ignoreHTTPSErrors: true,
-    };
+  try {
+    const now = Date.now();
+    if (!paymentData || _.isEmpty(paymentData) || expirestAt.getTime() <= now) {
+      const puppeteerConfig = {
+        headless: true,
+        args: ['--disable-setuid-sandbox'],
+        ignoreHTTPSErrors: true,
+      };
 
-    if (process.env.NODE_ENV === 'production') {
-      puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
-    }
-    try {
+      if (process.env.NODE_ENV === 'production') {
+        puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
+      }
+
       const browser = await puppeteer.launch(puppeteerConfig);
       const page = await login(
         browser,
@@ -89,14 +90,14 @@ export async function getServerSideProps({ req, res }) {
       );
       paymentData = await getPaymentData(page);
       expirestAt = new Date(now + 24 * 60 * 60 * 1000);
-    } catch (error) {
-      console.error('error: ', error);
-      paymentData = { error: error.message };
-      expirestAt = Date.now();
-    } finally {
-      return {
-        props: { paymentData }, // will be passed to the page component as props
-      };
     }
+  } catch (error) {
+    console.error('error: ', error);
+    paymentData = { error: error.message };
+    expirestAt = Date.now();
+  } finally {
+    return {
+      props: { paymentData }, // will be passed to the page component as props
+    };
   }
 }
