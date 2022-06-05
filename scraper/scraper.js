@@ -76,7 +76,6 @@ async function getPaymentData(page, selectedTransactionPeriod = 'currentYear') {
         }
       });
     }
-    // console.log('payment data ', paymentData);
     return paymentData;
   } catch (error) {
     throw error;
