@@ -1,4 +1,5 @@
 import Card from './card';
 import Title from './title';
+import Layout from './layout';
 
-export { Card, Title };
+export { Card, Title, Layout };

@@ -16,6 +16,7 @@ const waterChargeTitles = [
 ];
 
 const monthNames = [
+  'December',
   'January',
   'February',
   'March',
@@ -27,7 +28,6 @@ const monthNames = [
   'September',
   'October',
   'November',
-  'December',
 ];
 
 async function getPaymentData(page, selectedTransactionPeriod = 'currentYear') {

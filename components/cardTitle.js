@@ -15,7 +15,7 @@ export default ({ date, toggleShowBody, totalMonthly }) => {
     <>
       <div className={`card-title ${isOpen ? '' : 'card-title--open'}`}>
         <h2>
-          Month: {date} ({currency(totalMonthly).format()})
+          Month: {date} {!isOpen && `(${currency(totalMonthly).format()})`}
         </h2>
         <div
           className={`card-title-button ${
@@ -39,6 +39,9 @@ export default ({ date, toggleShowBody, totalMonthly }) => {
           justify-content: space-between;
           align-items: center;
           border-bottom: 1px solid #555;
+        }
+        .card-title h2 {
+          margin-bottom: 8px;
         }
         .card-title.card-title--open {
           border-bottom: none;

@@ -1,22 +1,22 @@
-import { Card, Title } from '../components';
+import { Card, Title, Layout } from '../components';
 
 const Index = ({ paymentData }) => {
   return (
-    <div className="container">
+    <Layout>
       <Title />
-      <div className="content">
+      <div className="container">
         {Object.keys(paymentData).map((date, i) => (
           <div key={i}>
             <Card data={paymentData[date]} date={date} />
           </div>
         ))}
+        <style jsx>{`
+          .container {
+            padding: 0 1rem 1rem 1rem;
+          }
+        `}</style>
       </div>
-      <style jsx>{`
-        .container {
-          padding: 0 1rem 1rem 1rem;
-        }
-      `}</style>
-    </div>
+    </Layout>
   );
 };
 
