@@ -1,14 +1,20 @@
-import { Card, Title, Layout, Error } from '../components';
-// import Error from 'next/error';
+import { Card, Title, Layout } from '../components';
+import Error from './_error';
 
 const Index = ({ paymentData }) => {
   const renderData = (paymentData) => {
     if (paymentData.error) {
       return (
-        <Error
-          statusCode={paymentData.error ?? 500}
-          error={paymentData.error}
-        />
+        <div className="error-container">
+          <Error statusCode={500} title={paymentData.error} />
+          <style jsx>{`
+            .error-container {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+          `}</style>
+        </div>
       );
     } else {
       return Object.keys(paymentData).map((date, i) => (
@@ -40,7 +46,7 @@ const puppeteer = require('puppeteer');
 const { login, getPaymentData } = require('../scraper');
 const _ = require('lodash');
 
-let expirestAt = Date.now();
+let expirestAt = new Date(Date.now());
 let paymentData;
 
 export async function getServerSideProps({ req, res }) {
@@ -94,8 +100,10 @@ export async function getServerSideProps({ req, res }) {
   } catch (error) {
     console.error('error: ', error);
     paymentData = { error: error.message };
-    expirestAt = Date.now();
+    expirestAt = new Date(Date.now());
   } finally {
+    console.log('expiration ', expirestAt);
+    console.log('data ', paymentData);
     return {
       props: { paymentData }, // will be passed to the page component as props
     };

@@ -2,6 +2,7 @@ export default ({ children }) => (
   <>
     {children}
     <style jsx global>{`
+      @import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap');
       body {
         margin: 0;
         padding: 0;
