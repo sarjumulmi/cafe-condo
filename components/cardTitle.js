@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import currency from 'currency.js';
 
-export default ({ date, toggleShowBody, totalMonthly }) => {
-  const [isOpen, setIsOpen] = useState(true);
+export default ({ date, toggleShowBody, totalMonthly, isOpen: cardIsOpen }) => {
+  const [isOpen, setIsOpen] = useState(cardIsOpen);
 
   const toggleOpen = () => {
     setIsOpen((isOpen) => {

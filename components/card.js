@@ -3,8 +3,8 @@ import currency from 'currency.js';
 import CardTitle from './cardTitle';
 import { useState } from 'react';
 
-export default ({ data, date }) => {
-  const [showCardBody, setShowCardBody] = useState(true);
+export default ({ data, date, isOpen }) => {
+  const [showCardBody, setShowCardBody] = useState(isOpen);
 
   const toggleShowBody = () => {
     setShowCardBody((showCardBody) => !showCardBody);
@@ -16,6 +16,7 @@ export default ({ data, date }) => {
         date={date}
         toggleShowBody={toggleShowBody}
         totalMonthly={data[data.length - 1].totalMonthly}
+        isOpen={isOpen}
       />
       <div className={`card-body ${showCardBody ? '' : 'card-body--hidden'}`}>
         {data.map((dataItem, i) => (

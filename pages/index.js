@@ -19,7 +19,7 @@ const Index = ({ paymentData }) => {
     } else {
       return Object.keys(paymentData).map((date, i) => (
         <div key={i}>
-          <Card data={paymentData[date]} date={date} />
+          <Card data={paymentData[date]} date={date} isOpen={i===0 ? true : false}/>
         </div>
       ));
     }
