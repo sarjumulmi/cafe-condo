@@ -42,23 +42,37 @@ async function getPaymentData(page, selectedTransactionPeriod = 'currentYear') {
     await page.click('#formbutton');
     await page.waitForTimeout(2000);
     await page.select('.dataTables_length select', '100');
-    const content = await page.content();
+
     let paymentData = [];
-    const $ = cheerio.load(content);
-    $('#divLedger table tbody tr').each((i, row) => {
-      const date = new Date($(row).find('td[data-label="Date"]').text());
-      const data = {
-        unit: $(row).find('td[data-label="Unit"]').text(),
-        date,
-        chargeTitle: $(row)
-          .find('td[data-label="Payments and Charges"]')
-          .text(),
-        amount: parseFloat(
-          $(row).find('td[data-label="Charges"]').text().replace('$', ''),
-        ),
-      };
-      waterChargeTitles.includes(data.chargeTitle) && paymentData.push(data);
-    });
+    let more = true;
+
+    while (more) {
+      const content = await page.content();
+      const $ = cheerio.load(content);
+      $('#divLedger table tbody tr').each((i, row) => {
+        const date = new Date($(row).find('td[data-label="Date"]').text());
+        const data = {
+          unit: $(row).find('td[data-label="Unit"]').text(),
+          date,
+          chargeTitle: $(row)
+            .find('td[data-label="Payments and Charges"]')
+            .text(),
+          amount: parseFloat(
+            $(row).find('td[data-label="Charges"]').text().replace('$', ''),
+          ),
+        };
+        waterChargeTitles.includes(data.chargeTitle) && paymentData.push(data);
+      });
+
+      const next = $('.pagination ul li.next:not(.disabled)');
+      more = next.length === 0 ? false : true;
+
+      if (more) {
+        await page.click('.pagination ul li.next:not(.disabled) a');
+        await page.waitForTimeout(2000);
+      }
+    }
+
     paymentData = _(paymentData)
       .orderBy(['date'], ['desc'])
       .groupBy(
