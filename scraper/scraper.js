@@ -16,7 +16,6 @@ const waterChargeTitles = [
 ];
 
 const monthNames = [
-  'December',
   'January',
   'February',
   'March',
@@ -28,6 +27,7 @@ const monthNames = [
   'September',
   'October',
   'November',
+  'December',
 ];
 
 async function getPaymentData(page, selectedTransactionPeriod = 'currentYear') {
@@ -75,9 +75,10 @@ async function getPaymentData(page, selectedTransactionPeriod = 'currentYear') {
 
     paymentData = _(paymentData)
       .orderBy(['date'], ['desc'])
-      .groupBy(
-        (d) => `${monthNames[d.date.getMonth()]}, ${d.date.getFullYear()}`,
-      )
+      .groupBy((d) => {
+        const [month, year] = getMonthYear(d.date);
+        return `${month}, ${year}`;
+      })
       .value();
     for (const period in paymentData) {
       const total = paymentData[period].reduce((prev, curr) => {
@@ -94,6 +95,18 @@ async function getPaymentData(page, selectedTransactionPeriod = 'currentYear') {
   } catch (error) {
     throw error;
   }
+}
+
+function getMonthYear(date) {
+  let monthIdx = date.getMonth() - 1;
+  let year = date.getFullYear();
+
+  if (monthIdx === -1) {
+    monthIdx = 11;
+    year--;
+  }
+
+  return [monthNames[monthIdx], year];
 }
 
 module.exports = getPaymentData;
