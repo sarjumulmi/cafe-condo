@@ -7,7 +7,7 @@ function login(browser, loginUrl, email, password) {
       await page.type("#Password", password);
       await page.click("#SignIn");
       await page.waitForSelector("#ResServicesContent ul li:first-child a", {
-        timeout: 120000,
+        timeout: 4 * 60 * 1000,
       });
 
       return resolve(page);
