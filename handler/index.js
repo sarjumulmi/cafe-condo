@@ -19,7 +19,7 @@ exports.scrapePaymentData = async function () {
   let browser;
   try {
     const puppeteerConfig = {
-      headless: true,
+      headless: 'new',
       args: ['--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true
     };

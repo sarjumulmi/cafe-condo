@@ -87,7 +87,7 @@ export async function getServerSideProps({ req, res }) {
     const now = Date.now();
     if (!paymentData || _.isEmpty(paymentData) || expirestAt.getTime() <= now) {
       const puppeteerConfig = {
-        headless: true,
+        headless: 'new',
         args: ['--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true
       };

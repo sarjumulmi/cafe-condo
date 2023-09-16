@@ -22,5 +22,3 @@ module.exports = {
     }
   }
 };
-
-//postgres://postgres:GhaM-nVwUZ@4F6i93dUCEFGN@db.rtrzebzynseuwpecsuiz.supabase.co:5432/postgres'
