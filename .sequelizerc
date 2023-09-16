@@ -1,0 +1,9 @@
+const path = require("path");
+
+// these are standard .sequelizerc config values.
+
+exports.config = path.resolve(__dirname, "db", "config", "config.js");
+// path to folder containing your db migration files.
+exports["migrations-path"] = path.resolve(__dirname, "db", "migrations");
+// path to folder containing your db models.
+exports["models-path"] = path.resolve(__dirname, "db", "models");

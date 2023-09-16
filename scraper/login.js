@@ -1,4 +1,4 @@
-function login(browser, loginUrl, email, password) {
+exports.login = function (browser, loginUrl, email, password) {
   return new Promise(async (resolve, reject) => {
     try {
       const page = await browser.newPage();
@@ -15,6 +15,4 @@ function login(browser, loginUrl, email, password) {
       return reject(error);
     }
   });
-}
-
-module.exports = login;
+};
