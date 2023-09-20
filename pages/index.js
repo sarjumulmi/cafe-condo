@@ -1,5 +1,6 @@
 import { Card, Title, Layout } from '../components';
 import Error from './_error';
+import { logger } from '../utils';
 
 const Index = ({ paymentData }) => {
   const renderData = (paymentData) => {
@@ -107,12 +108,12 @@ export async function getServerSideProps({ req, res }) {
       expirestAt = new Date(now + 24 * 60 * 60 * 1000);
     }
   } catch (error) {
-    console.error('error: ', error);
+    logger.error('error: ', error);
     paymentData = { error: error.message };
     expirestAt = new Date(Date.now());
   } finally {
-    console.log('expiration ', expirestAt);
-    console.log('data ', paymentData);
+    logger.debug('expiration ', expirestAt);
+    logger.debug('data ', paymentData);
     await browser.close();
     return {
       props: { paymentData } // will be passed to the page component as props

@@ -88,8 +88,10 @@ exports.getPaymentData = async function (
     const transactionPeriod =
       transactionPeriodSelector[selectedTransactionPeriod] ?? '2';
     await page.select('#TransactionPeriod', transactionPeriod);
+    await page.waitForTimeout(5000);
     await page.click('#formbutton');
-    await page.waitForTimeout(2000);
+
+    await page.waitForTimeout(5000);
     await page.select('.dataTables_length select', '100');
 
     let paymentData = [];

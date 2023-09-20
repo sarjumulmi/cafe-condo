@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 exports.populateInvoices = async function (paymentData, db) {
   const chargeData = paymentData.map((data) => ({
     ...data,
-    charge_date: data.date,
+    charge_date: data.date.setMonth(data.date.getMonth() - 1),
     charge_title: data.chargeTitle
   }));
   try {
@@ -19,13 +19,16 @@ exports.scrapePaymentData = async function () {
   let browser;
   try {
     const puppeteerConfig = {
-      headless: 'new',
+      headless: false,
       args: ['--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true
     };
 
     if (process.env.ENV === 'production') {
       puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
+    } else {
+      puppeteerConfig.executablePath =
+        '/Applications/Chromium.app/Contents/MacOS/Chromium';
     }
 
     browser = await puppeteer.launch(puppeteerConfig);
