@@ -49,6 +49,26 @@ exports.scrapePaymentData = async function () {
   }
 };
 
+exports.getPaymentData = async function (db) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const { models, sequelize } = db;
+  try {
+    const data = models.invoice.findAll({
+      where: sequelize.where(
+        sequelize.literal('extract(year from charge_date)'),
+        year
+      )
+      // raw: true
+    });
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 // (async () => {
 //   await exports.populateInvoices(
 //     [
