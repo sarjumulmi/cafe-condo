@@ -1,6 +1,5 @@
 import { Card, Title, Layout } from '../components';
 import Error from './_error';
-import { logger } from '../utils';
 
 const Index = ({ paymentData }) => {
   const renderData = (paymentData) => {
@@ -46,77 +45,24 @@ const Index = ({ paymentData }) => {
 
 export default Index;
 
-// require('dotenv').config();
-const puppeteer = require('puppeteer');
-const {
-  login,
-  getPaymentData,
-  getNormalizedPaymentData
-} = require('../scraper');
+const { getInvoiceData } = require('../handler');
+const db = require('../db/models');
+const { getNormalizedPaymentData } = require('../scraper');
 const _ = require('lodash');
 
-let expirestAt = new Date(Date.now());
-let paymentData;
-
-export async function getServerSideProps({ req, res }) {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=86400, stale-while-revalidate=60'
-  );
-
-  // const puppeteerConfig = {
-  //   headless: true,
-  //   args: ['--disable-setuid-sandbox'],
-  //   ignoreHTTPSErrors: true,
-  // };
-
-  // if (process.env.NODE_ENV === 'production') {
-  //   puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
-  // }
-  // const browser = await puppeteer.launch(puppeteerConfig);
-  // const page = await login(
-  //   browser,
-  //   process.env.BASE_URL,
-  //   process.env.EMAIL,
-  //   process.env.PASSWORD,
-  // );
-  // const paymentData = await getPaymentData(page);
-
-  //if cache control doesn't work, make a local cache
-  let browser;
+export const getStaticProps = async () => {
   try {
-    const now = Date.now();
-    if (!paymentData || _.isEmpty(paymentData) || expirestAt.getTime() <= now) {
-      const puppeteerConfig = {
-        headless: 'new',
-        args: ['--disable-setuid-sandbox'],
-        ignoreHTTPSErrors: true
-      };
-
-      if (process.env.NODE_ENV === 'production') {
-        puppeteerConfig.executablePath = '/usr/bin/chromium-browser';
-      }
-
-      browser = await puppeteer.launch(puppeteerConfig);
-      const page = await login(
-        browser,
-        process.env.BASE_URL,
-        process.env.EMAIL,
-        process.env.PASSWORD
-      );
-      paymentData = getNormalizedPaymentData(await getPaymentData(page));
-      expirestAt = new Date(now + 24 * 60 * 60 * 1000);
-    }
-  } catch (error) {
-    logger.error('error: ', error);
-    paymentData = { error: error.message };
-    expirestAt = new Date(Date.now());
-  } finally {
-    logger.debug('expiration ', expirestAt);
-    logger.debug('data ', paymentData);
-    await browser.close();
+    const data = await getInvoiceData(db);
     return {
-      props: { paymentData } // will be passed to the page component as props
+      props: {
+        paymentData: getNormalizedPaymentData(data)
+      }
+    };
+  } catch (error) {
+    return {
+      props: {
+        paymentData: { error: error.message }
+      }
     };
   }
-}
+};

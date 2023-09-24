@@ -1,5 +1,4 @@
 const { login, getPaymentData } = require('../scraper');
-const db = require('../db/models');
 const puppeteer = require('puppeteer');
 
 exports.populateInvoices = async function (paymentData, db) {
@@ -9,7 +8,7 @@ exports.populateInvoices = async function (paymentData, db) {
     charge_title: data.chargeTitle
   }));
   try {
-    db.models.invoice.bulkCreate(chargeData, { ignoreDuplicates: true });
+    await db.models.invoice.bulkCreate(chargeData, { ignoreDuplicates: true });
   } catch (error) {
     throw error;
   }
@@ -19,7 +18,7 @@ exports.scrapePaymentData = async function () {
   let browser;
   try {
     const puppeteerConfig = {
-      headless: false,
+      headless: 'new',
       args: ['--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true
     };
@@ -49,17 +48,17 @@ exports.scrapePaymentData = async function () {
   }
 };
 
-exports.getPaymentData = async function (db) {
+exports.getInvoiceData = async function (db) {
   const now = new Date();
   const year = now.getFullYear();
   const { models, sequelize } = db;
   try {
-    const data = models.invoice.findAll({
+    const data = await models.invoice.findAll({
       where: sequelize.where(
         sequelize.literal('extract(year from charge_date)'),
         year
-      )
-      // raw: true
+      ),
+      raw: true
     });
 
     return data;
@@ -68,23 +67,3 @@ exports.getPaymentData = async function (db) {
     throw error;
   }
 };
-
-// (async () => {
-//   await exports.populateInvoices(
-//     [
-//       {
-//         charge_date: new Date('2023-01-17T04:33:12.000Z'),
-//         charge_title: 'sewer consumption',
-//         amount: 25.23,
-//         unit: '154'
-//       },
-//       {
-//         charge_date: new Date('2022-01-17T04:33:12.000Z'),
-//         charge_title: 'water consumption',
-//         amount: 25.23,
-//         unit: '154'
-//       }
-//     ],
-//     db
-//   );
-// })();

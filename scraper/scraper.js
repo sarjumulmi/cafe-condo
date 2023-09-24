@@ -46,6 +46,13 @@ const monthNames = [
 
 exports.getNormalizedPaymentData = function (paymentData) {
   const normalizedPaymentData = _(paymentData)
+    .filter((d) => waterChargeTitles.includes(d.charge_title))
+    .map((d) => ({
+      unit: d.unit,
+      amount: d.amount,
+      date: d.charge_date,
+      chargeTitle: d.charge_title
+    }))
     .orderBy(['date'], ['desc'])
     .groupBy((d) => {
       const [month, year] = getMonthYear(d.date);
@@ -137,27 +144,9 @@ exports.getPaymentData = async function (
   }
 };
 
-exports.getFlattenedPaymentData = (paymentData) => {
-  const flattenedPaymentData = [];
-
-  for (const key in paymentData) {
-    if (Object.hasOwnProperty.call(paymentData, key)) {
-      const charges = paymentData[key]; //[{},{}...]
-      flattenedPaymentData.push(...charges);
-    }
-  }
-
-  return flattenedPaymentData;
-};
-
 function getMonthYear(date) {
-  let monthIdx = date.getMonth() - 1;
+  let monthIdx = date.getMonth();
   let year = date.getFullYear();
-
-  if (monthIdx === -1) {
-    monthIdx = 11;
-    year--;
-  }
 
   return [monthNames[monthIdx], year];
 }
